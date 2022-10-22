@@ -8,6 +8,7 @@ const REMOTE = 'https://crombie-node-production.up.railway.app';
 type ProductType = {
   name: string,
   brand: string,
+  price: number
   id: number
 }
 
@@ -48,9 +49,8 @@ function App() {
           </thead>
           <tbody>
             {products && products.map((p) =>
-              <Product id={p.id} brand={p.brand} name={p.name} price={1} key={p.id} handleOnDelete={() => handleOnDelete(p.id)} handleOnUpdate={() => null} />
+              <Product id={p.id} brand={p.brand} name={p.name} price={p.price} key={p.id} handleOnDelete={() => handleOnDelete(p.id)} handleOnUpdate={() => null} />
             )}
-            <Product id={123} brand={'piñon'} name={'fijo'} price={100} key={123} handleOnDelete={() => handleOnDelete(123)} handleOnUpdate={() => null} />
           </tbody>
           <tfoot>
           </tfoot>
