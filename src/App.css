@@ -1,4 +1,13 @@
+body {
+  margin: 0;
+}
+
 .App {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
 
@@ -32,7 +41,62 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+table {
+  border-radius: 25px;
+  background-color: rgb(15, 15, 60);
+}
+
+th {
+  padding: 10px 1.5em;
+  color: white;
+}
+
+tbody {
+  background-color: #ededed;
+}
+
+td {
+  padding: 0 1.5em;
+  color: #282c34;
+  font-weight: 500;
+  border-bottom: 2px solid #282c34;
+}
+
+tr td:nth-child(3) {
+  text-align: right;
+}
+
+tfoot {
+  height: 30px;
+}
+
+button {
+  padding: 10px 25px;
+  border-radius: 5px;
+  color: #ededed;
+  font-size: 0.8em;
+  border: none;
+  cursor: pointer;
+}
+
+.delete {
+  background-color: #a31212;
+}
+
+.delete:hover {
+  background-color: #c43434;
+}
+
+.edit {
+  background-color: #1c8dac;
+}
+
+.edit:hover {
+  background-color: #54c8e8;
 }
