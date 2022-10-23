@@ -15,8 +15,6 @@ const EditProduct = () => {
     const [price, setPrice] = useState<number>(0);
     const [product, setProduct] = useState<ProductType>();
 
-
-
     const { productId } = useParams();
 
     const navigate = useNavigate();
