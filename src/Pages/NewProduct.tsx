@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type ProductType = {
     name: string,
@@ -43,7 +44,7 @@ const NewProduct = () => {
     }
 
     return (
-        <div>
+        <div className='NewProduct'>
             <h2 className="underline">Add New Product</h2>
             <form onSubmit={(e) => { handleAddProduct(e) }}>
                 <div>
@@ -60,8 +61,10 @@ const NewProduct = () => {
                     <label className={price ? '' : "hidden"} htmlFor="price">Price $</label>
                     <input value={price ? price : ''} name="price" type="number" placeholder={'Price'} onChange={(e) => setPrice(+e.target.value)} />
                 </div>
-                <button disabled={!name || !brand || !price}>Add</button>
+                <button className='button add' disabled={!name || !brand || !price}>Add</button>
             </form>
+
+            <Link to='/' ><button className='button edit'>Go back</button></Link>
         </div>
     );
 }

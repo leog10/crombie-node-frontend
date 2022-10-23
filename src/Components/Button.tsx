@@ -1,7 +1,7 @@
 type ButtonType = {
     text: string,
     className: string,
-    handleOnClick: () => void,
+    handleOnClick?: () => void,
 }
 
 const Button: React.FC<ButtonType> = ({ text, className, handleOnClick }) => {

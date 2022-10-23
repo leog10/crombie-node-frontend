@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "./Button";
 
 type ProductType = {
@@ -5,19 +6,18 @@ type ProductType = {
     brand: string,
     price: number,
     id: number,
-    handleOnDelete: (id: number) => void,
-    handleOnUpdate: (id: number) => void,
+    handleOnDelete: (id: number) => void
 }
 
-const Product: React.FC<ProductType> = ({ brand, name, price, id, handleOnDelete, handleOnUpdate }) => {
+const Product: React.FC<ProductType> = ({ brand, name, price, id, handleOnDelete }) => {
     return (
         <>
             <tr key={id}>
                 <td><p>{name}</p></td>
                 <td><p>{brand}</p></td>
                 <td><p>${price}</p></td>
-                <td><Button text="Edit" className="edit" handleOnClick={() => handleOnUpdate(id)} /></td>
-                <td><Button text="Delete" className="delete" handleOnClick={() => handleOnDelete(id)} /></td>
+                <td><Link to='/edit'><button className="button edit">Edit</button></Link></td>
+                <td><Button text="Delete" className="button delete" handleOnClick={() => handleOnDelete(id)} /></td>
             </tr>
         </>
     );

@@ -1,5 +1,13 @@
+html {
+  background-color: #282c34;
+}
+
 body {
   margin: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 .App {
@@ -8,14 +16,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
+  text-align: center;
+}
+
+.Home {
+  margin: 0 auto;
+
+}
+
+.NewProduct {
   color: white;
+  margin: 100px auto auto;
 }
 
 table {
@@ -48,19 +61,29 @@ tfoot {
   height: 30px;
 }
 
-button {
-  background-color: #0e6d2e;
+.button {
   padding: 10px 25px;
   border-radius: 5px;
   color: #ededed;
   font-size: 0.8em;
+  font-weight: 600;
   border: none;
   cursor: pointer;
+  text-decoration: none;
 }
 
-button:hover {
+.button:hover {
+  transform: scale(1.01);
+}
+
+.add {
+  background-color: #0e6d2e;
+  padding: 10px 25px;
+  border-radius: 5px;
+}
+
+.add:hover {
   background-color: #0e943b;
-  transform: scale(1.02);
 }
 
 button:disabled {
