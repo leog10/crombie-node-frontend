@@ -1,9 +1,11 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 import Product from './Components/Product';
+import Button from './Components/Button';
+import NewProduct from './NewProduct';
 
-// const LOCAL = 'http://localhost:5000';
-const REMOTE = 'https://crombie-node-production.up.railway.app';
+const API_URL = 'http://localhost:5000'; // LOCAL
+// const API_URL = 'https://crombie-node-production.up.railway.app'; // REMOTE
 
 type ProductType = {
   name: string,
@@ -16,7 +18,7 @@ function App() {
   const [products, setProducts] = useState<ProductType[]>([]);
 
   useEffect(() => {
-    fetch(`${REMOTE}/product`)
+    fetch(`${API_URL}/product`)
       .then((res) => res.json())
       .then((result) => setProducts(result)
       ).catch((error) => console.log(error.message)
@@ -24,7 +26,7 @@ function App() {
   }, [products])
 
   const handleOnDelete = (id: number) => {
-    fetch(`https://crombie-node-production.up.railway.app/product/${id}`, {
+    fetch(`${API_URL}/product/${id}`, {
       method: 'DELETE'
     })
       .then((res) => res.json())
@@ -33,30 +35,35 @@ function App() {
       )
   }
 
+  const handleOnUpdate = () => {
+    console.log("update");
+
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
+      <table cellSpacing='0' cellPadding="0">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products && products.map((p) =>
+            <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} handleOnDelete={handleOnDelete} handleOnUpdate={handleOnUpdate} />
+          )}
+        </tbody>
+        <tfoot>
+        </tfoot>
+      </table>
 
-        <table cellSpacing='0' cellPadding="0">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Brand</th>
-              <th>Price</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products && products.map((p) =>
-              <Product id={p.id} brand={p.brand} name={p.name} price={p.price} key={p.id} handleOnDelete={() => handleOnDelete(p.id)} handleOnUpdate={() => null} />
-            )}
-          </tbody>
-          <tfoot>
-          </tfoot>
-        </table>
+      <Button className='' text='Add Product' handleOnClick={() => { }} />
 
-      </header>
+      <NewProduct />
     </div >
   );
 }

@@ -1,13 +1,13 @@
 type ButtonType = {
     text: string,
     className: string,
-    onClick: () => void,
+    handleOnClick: () => void,
 }
 
-const Button: React.FC<ButtonType> = ({ text, className }) => {
+const Button: React.FC<ButtonType> = ({ text, className, handleOnClick }) => {
     return (
         <>
-            <button className={className}>{text}</button>
+            <button className={className} onClick={handleOnClick}>{text}</button>
         </>
     );
 }

@@ -9,45 +9,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
   background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 table {
+  margin: 200px 0 50px;
   border-radius: 25px;
   background-color: rgb(15, 15, 60);
 }
@@ -77,6 +49,7 @@ tfoot {
 }
 
 button {
+  background-color: #0e6d2e;
   padding: 10px 25px;
   border-radius: 5px;
   color: #ededed;
@@ -85,12 +58,21 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #0e943b;
+  transform: scale(1.02);
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
 .delete {
   background-color: #a31212;
 }
 
 .delete:hover {
-  background-color: #c43434;
+  background-color: #d11010;
 }
 
 .edit {
@@ -98,5 +80,57 @@ button {
 }
 
 .edit:hover {
-  background-color: #54c8e8;
+  background-color: #1ca0c5;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+form label {
+  font-size: 0.7em;
+  text-align: left;
+}
+
+form input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  margin: 5px auto;
+  font-size: 0.7em;
+}
+
+form input:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: -1px;
+}
+
+form button {
+  margin: 20px 0;
+}
+
+.underline {
+  text-decoration: underline #1c8dac;
+}
+
+.hidden {
+  display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
 }
