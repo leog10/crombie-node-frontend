@@ -16,7 +16,7 @@ const Product: React.FC<ProductType> = ({ brand, name, price, id, handleOnDelete
                 <td><p>{name}</p></td>
                 <td><p>{brand}</p></td>
                 <td><p>${price}</p></td>
-                <td><Link to='/edit'><button className="button edit">Edit</button></Link></td>
+                <td><Link to={`/edit/${id}`}><button className="button edit">Edit</button></Link></td>
                 <td><Button text="Delete" className="button delete" handleOnClick={() => handleOnDelete(id)} /></td>
             </tr>
         </>

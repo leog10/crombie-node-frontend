@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type ProductType = {
     name: string,
@@ -8,9 +8,11 @@ type ProductType = {
 }
 
 const NewProduct = () => {
-    const [name, setName] = useState('');
-    const [brand, setBrand] = useState('');
-    const [price, setPrice] = useState(0);
+    const [name, setName] = useState<string>('');
+    const [brand, setBrand] = useState<string>('');
+    const [price, setPrice] = useState<number>(0);
+
+    const navigate = useNavigate();
 
     const handleAddProduct = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -36,11 +38,10 @@ const NewProduct = () => {
                 setName('');
                 setBrand('');
                 setPrice(0);
-                console.log('Product created');
+                navigate('/');
             }
         }
         ).catch((error) => console.log(error.message))
-
     }
 
     return (
@@ -63,8 +64,7 @@ const NewProduct = () => {
                 </div>
                 <button className='button add' disabled={!name || !brand || !price}>Add</button>
             </form>
-
-            <Link to='/' ><button className='button edit'>Go back</button></Link>
+            <Link to='/' ><button className='button back'>Go back</button></Link>
         </div>
     );
 }

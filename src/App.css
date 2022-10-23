@@ -23,10 +23,10 @@ a {
 
 .Home {
   margin: 0 auto;
-
 }
 
-.NewProduct {
+.NewProduct,
+.EditProduct {
   color: white;
   margin: 100px auto auto;
 }
@@ -104,6 +104,14 @@ button:disabled {
 
 .edit:hover {
   background-color: #1ca0c5;
+}
+
+.back {
+  background-color: #4323b6;
+}
+
+.back:hover {
+  background-color: #502bd6;
 }
 
 form {
