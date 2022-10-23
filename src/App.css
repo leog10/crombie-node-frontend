@@ -22,7 +22,13 @@ a {
 }
 
 .Home {
+  color: white;
   margin: 0 auto;
+  text-align: center;
+}
+
+.Home h2 {
+  margin-top: 200px;
 }
 
 .NewProduct,
@@ -62,7 +68,8 @@ tfoot {
 }
 
 .button {
-  padding: 10px 25px;
+  padding: 10px 20px;
+  width: max-content;
   border-radius: 5px;
   color: #ededed;
   font-size: 0.8em;
@@ -70,10 +77,14 @@ tfoot {
   border: none;
   cursor: pointer;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .button:hover {
-  transform: scale(1.01);
+  transform: translateY(-1px);
 }
 
 .add {
@@ -145,7 +156,7 @@ form input:focus-visible {
 }
 
 form button {
-  margin: 20px 0;
+  margin-top: 10px !important;
 }
 
 .underline {

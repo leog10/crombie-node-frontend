@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import '../Components/Button.css'
 
-const API_URL = 'http://localhost:5000'; // LOCAL
+// const API_URL = 'http://localhost:5000/product'; // LOCAL
+const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
 
 type ProductType = {
     name: string,
@@ -14,13 +16,14 @@ const EditProduct = () => {
     const [brand, setBrand] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
     const [product, setProduct] = useState<ProductType>();
+    const [loading, setLoading] = useState<boolean>(false);
 
     const { productId } = useParams();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${API_URL}/product/${productId}`)
+        fetch(`${API_URL}/${productId}`)
             .then((res) => res.json())
             .then((result) => {
                 setProduct(result);
@@ -36,6 +39,8 @@ const EditProduct = () => {
     const handleEditProduct = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setLoading(true);
+
         if (!name || !brand || !price) {
             return;
         }
@@ -46,13 +51,16 @@ const EditProduct = () => {
             price
         }
 
-        fetch(`http://localhost:5000/product/${productId}`, {
+        fetch(`${API_URL}/${productId}`, {
             method: 'PUT',
             body: JSON.stringify(updateProduct),
             headers: {
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
+            setLoading((value) => {
+                return !value;
+            });
             if (res.status === 200) {
                 navigate('/');
             }
@@ -78,7 +86,7 @@ const EditProduct = () => {
                     <label className={price ? '' : "hidden"} htmlFor="price">Price $</label>
                     <input value={price ? price : ''} name="price" type="number" placeholder={'Price'} onChange={(e) => setPrice(+e.target.value)} />
                 </div>
-                <button className='button add' disabled={(!name || !brand || !price) || (product?.name === name && product?.brand === brand && product?.price === price)}>Edit</button>
+                <button className='button add' disabled={(!name || !brand || !price) || (product?.name === name && product?.brand === brand && product?.price === price) || loading}>{loading ? <div className="loader"></div> : ''}Edit</button>
             </form>
             <Link to='/' ><button className='button back'>Go back</button></Link>
         </div>

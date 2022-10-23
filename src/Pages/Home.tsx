@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Product from "../Components/Product";
 
-const API_URL = 'http://localhost:5000'; // LOCAL
-// const API_URL = 'https://crombie-node-production.up.railway.app'; // REMOTE
+// const API_URL = 'http://localhost:5000/product'; // LOCAL
+const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
 
 type ProductType = {
     name: string,
@@ -13,27 +13,21 @@ type ProductType = {
 }
 
 const Home = () => {
-    const [products, setProducts] = useState<ProductType[]>([]);
+    const [products, setProducts] = useState<ProductType[]>();
+
 
     useEffect(() => {
-        fetch(`${API_URL}/product`)
+        fetch(`${API_URL}`)
             .then((res) => res.json())
             .then((result) => setProducts(result)
             ).catch((error) => console.log(error.message)
             );
     }, [products])
 
-    const handleOnDelete = (id: number) => {
-        fetch(`${API_URL}/product/${id}`, {
-            method: 'DELETE'
-        })
-            .then((res) => res.json())
-            .catch((error) => console.log(error)
-            )
-    }
+
 
     return (<div className="Home">
-        <table cellSpacing='0' cellPadding="0">
+        {products ? <table cellSpacing='0' cellPadding="0">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -45,12 +39,12 @@ const Home = () => {
             </thead>
             <tbody>
                 {products && products.map((p) =>
-                    <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} handleOnDelete={handleOnDelete} />
+                    <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} handleOnDelete={() => { }} />
                 )}
             </tbody>
             <tfoot>
             </tfoot>
-        </table>
+        </table> : <h2>Loading...</h2>}
 
         <Link to="/new"><button className="button add">Add Product</button></Link>
     </div>);

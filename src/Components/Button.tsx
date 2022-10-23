@@ -1,13 +1,16 @@
+import './Button.css'
+
 type ButtonType = {
     text: string,
     className: string,
     handleOnClick?: () => void,
+    loading: boolean,
 }
 
-const Button: React.FC<ButtonType> = ({ text, className, handleOnClick }) => {
+const Button: React.FC<ButtonType> = ({ text, className, handleOnClick, loading }) => {
     return (
         <>
-            <button className={className} onClick={handleOnClick}>{text}</button>
+            <button disabled={loading} className={className} onClick={handleOnClick}>{loading ? <div className="loader"></div> : ''}{text}</button>
         </>
     );
 }

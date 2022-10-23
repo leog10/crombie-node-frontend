@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+// const API_URL = 'http://localhost:5000/product'; // LOCAL
+const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
+
 type ProductType = {
     name: string,
     brand: string,
@@ -11,6 +14,7 @@ const NewProduct = () => {
     const [name, setName] = useState<string>('');
     const [brand, setBrand] = useState<string>('');
     const [price, setPrice] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -21,19 +25,24 @@ const NewProduct = () => {
             return;
         }
 
+        setLoading(true);
+
         const newProduct: ProductType = {
             name,
             brand,
             price
         }
 
-        fetch('http://localhost:5000/product', {
+        fetch(`${API_URL}`, {
             method: 'POST',
             body: JSON.stringify(newProduct),
             headers: {
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
+            setLoading((value) => {
+                return !value;
+            });
             if (res.status === 201) {
                 setName('');
                 setBrand('');
@@ -62,7 +71,7 @@ const NewProduct = () => {
                     <label className={price ? '' : "hidden"} htmlFor="price">Price $</label>
                     <input value={price ? price : ''} name="price" type="number" placeholder={'Price'} onChange={(e) => setPrice(+e.target.value)} />
                 </div>
-                <button className='button add' disabled={!name || !brand || !price}>Add</button>
+                <button className='button add' disabled={!name || !brand || !price || loading}>{loading ? <div className="loader"></div> : ''}Add</button>
             </form>
             <Link to='/' ><button className='button back'>Go back</button></Link>
         </div>
