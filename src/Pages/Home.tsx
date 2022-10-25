@@ -21,7 +21,7 @@ const Home = () => {
             .then((result) => setProducts(result)
             ).catch((error) => console.log(error.message)
             );
-    }, [products])
+    }, [])
 
     const handleOnDelete = (id: number) => {
         fetch(`${API_URL}/product/${id}`, {
