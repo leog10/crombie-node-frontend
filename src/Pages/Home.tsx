@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Product from "../Components/Product";
 
-const API_URL = 'http://localhost:5000'; // LOCAL
-// const API_URL = 'https://crombie-node-production.up.railway.app'; // REMOTE
+// const API_URL = 'http://localhost:5000'; // LOCAL
+const API_URL = 'https://crombie-node-production.up.railway.app'; // REMOTE
 
 type ProductType = {
     name: string,

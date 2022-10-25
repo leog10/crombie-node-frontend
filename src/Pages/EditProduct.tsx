@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-const API_URL = 'http://localhost:5000'; // LOCAL
+// const API_URL = 'http://localhost:5000'; // LOCAL
+const API_URL = 'https://crombie-node-production.up.railway.app'; // REMOTE
 
 type ProductType = {
     name: string,
