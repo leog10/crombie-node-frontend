@@ -22,7 +22,7 @@ const Home = () => {
             .then((result) => setProducts(result)
             ).catch((error) => console.log(error.message)
             );
-    }, [products])
+    }, [])
 
 
 
