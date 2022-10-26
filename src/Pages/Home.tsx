@@ -24,7 +24,21 @@ const Home = () => {
             );
     }, [])
 
-
+    const handleOnDelete = (id: number) => {
+        fetch(`${API_URL}/${id}`, {
+            method: 'DELETE'
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    fetch(`${API_URL}`)
+                        .then((res) => res.json())
+                        .then((result) => setProducts(result)
+                        ).catch((error) => console.log(error.message)
+                        );
+                }
+            })
+            .catch((error) => console.log(error));
+    }
 
     return (<div className="Home">
         {products ? <table cellSpacing='0' cellPadding="0">
@@ -39,7 +53,7 @@ const Home = () => {
             </thead>
             <tbody>
                 {products && products.map((p) =>
-                    <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} handleOnDelete={() => { }} />
+                    <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} onDelete={() => handleOnDelete(p.id)} />
                 )}
             </tbody>
             <tfoot>
