@@ -1,13 +1,9 @@
-:root {
-    --border: 0.25em;
-}
-
 .loader {
-    border: var(--border) solid #ffffff93;
+    border: 0.25em solid #ffffff93;
     /* Light grey */
-    border-top: var(--border) solid #3498db;
-    border-right: var(--border) solid #3498db;
-    border-bottom: var(--border) solid #3498db;
+    border-top: 0.25em solid #3498db;
+    border-right: 0.25em solid #3498db;
+    border-bottom: 0.25em solid #3498db;
     /* Blue */
     border-radius: 50%;
     width: 0.7em;
