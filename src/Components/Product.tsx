@@ -24,8 +24,14 @@ const Product: React.FC<ProductType> = ({ brand, name, price, id, onDelete }) =>
             <td><p>{name}</p></td>
             <td><p>{brand}</p></td>
             <td><p>${price}</p></td>
-            <td><Link to={`/edit/${id}`}><button className="button edit">Edit</button></Link></td>
-            <td><Button loading={loading} text="Delete" className="button delete" handleOnClick={handleOnClick} /></td>
+            <td>
+                <Link to={`/edit/${id}`}><button className="button edit">Edit</button></Link>
+                <Link to={`/edit/${id}`}><div className="edit-responsive"><i className="bi bi-pen-fill"></i></div></Link>
+            </td>
+            <td>
+                <Button loading={loading} text="Delete" className="button delete" handleOnClick={handleOnClick} />
+                <div className={loading ? 'loading delete-responsive' : "delete-responsive"}><i onClick={handleOnClick} className="bi bi-trash-fill"></i></div>
+            </td>
         </tr>
     );
 }

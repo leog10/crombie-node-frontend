@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+
 html {
   background-color: #282c34;
 }
@@ -39,9 +41,10 @@ a {
 }
 
 table {
-  margin: 200px 0 50px;
+  margin: 200px 5px 50px;
   border-radius: 25px;
   background-color: rgb(15, 15, 60);
+  font-size: calc(100vw / 90);
 }
 
 th {
@@ -54,10 +57,18 @@ tbody {
 }
 
 td {
-  padding: 0 1.5em;
+  padding: 5px 1.5em;
   color: #282c34;
   font-weight: 500;
   border-bottom: 2px solid #282c34;
+}
+
+tr td:nth-child(1) {
+  word-break: break-all;
+}
+
+tr td:nth-child(2) {
+  word-break: break-all;
 }
 
 tr td:nth-child(3) {
@@ -228,4 +239,53 @@ input::-webkit-inner-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.edit-responsive {
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: #bccccc;
+  color: #1a7791;
+  display: none;
+}
+
+.edit-responsive {
+  transform: translateY(-10px);
+}
+
+.delete-responsive {
+  border: 0;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: #bccccc;
+  color: #a31212;
+  cursor: pointer;
+  display: none;
+}
+
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.delete-responsive:nth-last-child() {
+  transform: translateY(-10px);
+}
+
+@media only screen and (max-width: 570px) {
+  .edit {
+    display: none;
+  }
+
+  .delete {
+    display: none;
+  }
+
+  .edit-responsive {
+    display: inline;
+  }
+
+  .delete-responsive {
+    display: inline;
+  }
 }

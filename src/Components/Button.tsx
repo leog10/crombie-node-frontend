@@ -9,9 +9,7 @@ type ButtonType = {
 
 const Button: React.FC<ButtonType> = ({ text, className, handleOnClick, loading }) => {
     return (
-        <>
-            <button disabled={loading} className={className} onClick={handleOnClick}>{loading ? <div className="loader"></div> : ''}{text}</button>
-        </>
+        <button disabled={loading} className={className} onClick={handleOnClick}>{loading ? <div className="loader"></div> : ''}{text}</button>
     );
 }
 
