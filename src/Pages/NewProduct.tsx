@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Input from '../Components/Input';
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
 const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
@@ -57,20 +58,11 @@ const NewProduct = () => {
         <div className='NewProduct'>
             <h2 className="underline">Add New Product</h2>
             <form onSubmit={(e) => { handleAddProduct(e) }}>
-                <div>
-                    <label className={name ? '' : "hidden"} htmlFor="name">Name</label>
-                    <input value={name ? name : ''} name="name" type="text" placeholder={'Name'} onChange={(e) => setName(e.target.value)} />
-                </div>
 
-                <div>
-                    <label className={brand ? '' : "hidden"} htmlFor="brand">Brand</label>
-                    <input value={brand ? brand : ''} name="brand" type="text" placeholder={'Brand'} onChange={(e) => setBrand(e.target.value)} />
-                </div>
+                <Input value={name} name='name' type='text' label='Name' setValue={setName} />
+                <Input value={brand} name='brand' type='text' label='Brand' setValue={setBrand} />
+                <Input value={price} name='price' type='number' label='Price' setValue={(e) => setPrice(+e)} />
 
-                <div>
-                    <label className={price ? '' : "hidden"} htmlFor="price">Price $</label>
-                    <input value={price ? price : ''} name="price" type="number" placeholder={'Price'} onChange={(e) => setPrice(+e.target.value)} />
-                </div>
                 <button className='button add' disabled={!name || !brand || !price || loading}>{loading ? <div className="loader"></div> : ''}Add</button>
             </form>
             <Link to='/' ><button className='button back'>Go back</button></Link>
