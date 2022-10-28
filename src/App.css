@@ -70,7 +70,7 @@ tfoot {
 
 .button {
   padding: 10px 20px;
-  width: max-content;
+  width: 100%;
   border-radius: 5px;
   color: #ededed;
   font-size: 0.8em;
@@ -80,6 +80,7 @@ tfoot {
   text-decoration: none;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   margin: 0 auto;
 }
@@ -90,7 +91,7 @@ tfoot {
 
 .add {
   background-color: #0e6d2e;
-  padding: 10px 25px;
+  padding: 15px 25px;
   border-radius: 5px;
 }
 
@@ -127,23 +128,24 @@ button:disabled {
 }
 
 form button {
-  margin-top: 10px !important;
+  padding: 15px !important;
+  margin-top: 20px !important;
 }
 
 .underline {
-  text-decoration: underline #1c8dac;
+  text-decoration: underline #4323b6;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  margin: 20px;
+  margin: 20px 10px 50px;
 }
 
 .input-container {
   position: relative;
   height: 50px;
-  margin-bottom: 20px;
+  margin: 10px auto;
 }
 
 form input {
@@ -183,7 +185,7 @@ form input:focus+label {
 .placeholder {
   display: block;
   position: absolute;
-  top: 45%;
+  top: 25px;
   transform: translateY(-40%) scale(1);
   left: 15px;
   transform-origin: left top;
@@ -195,7 +197,7 @@ form input:focus+label {
 .label-focus {
   display: block;
   position: absolute;
-  top: 45%;
+  top: 25px;
   transform: translateY(-100%) scale(0.9);
   left: 15px;
   transform-origin: left top;
