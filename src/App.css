@@ -30,25 +30,21 @@ a {
   text-align: center;
 }
 
-.Home h2 {
-  margin-top: 200px;
-}
-
 .NewProduct,
 .EditProduct {
   color: white;
-  margin: 100px auto auto;
+  margin: 5em auto auto;
 }
 
 table {
-  margin: 200px 5px 50px;
+  margin: 10em 1em 2em 1em;
   border-radius: 25px;
   background-color: rgb(15, 15, 60);
-  font-size: calc(100vw / 90);
+  font-size: 1em;
 }
 
 th {
-  padding: 10px 1.5em;
+  padding: 0.5em 1.5em;
   color: white;
 }
 
