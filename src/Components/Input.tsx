@@ -13,7 +13,7 @@ const Input: React.FC<InputType> = ({ label, value, name, type, setValue }) => {
 
     return (
         <div className="input-container">
-            <input onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} required value={value ? value : ''} id={name} name={name} type={type} onChange={(e) => setValue(e.target.value)} />
+            <input spellCheck={false} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)} required value={value ? value : ''} id={name} name={name} type={type} onChange={(e) => setValue(e.target.value)} />
             <label className={focus || value ? 'label-focus' : 'placeholder'} htmlFor={name}>{label}</label>
         </div>
     );
