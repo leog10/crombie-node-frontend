@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import '../Components/Button.css'
+import '../Components/Loader.css'
 import Input from "../Components/Input";
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
@@ -72,7 +72,7 @@ const EditProduct = () => {
     return (
         <div className="EditProduct">
             <h2 className="underline">Edit Product</h2>
-            <form onSubmit={(e) => { handleEditProduct(e) }}>
+            {product ? <div><form onSubmit={(e) => { handleEditProduct(e) }}>
 
                 <Input value={name} name='name' type='text' label='Name' setValue={setName} />
                 <Input value={brand} name='brand' type='text' label='Brand' setValue={setBrand} />
@@ -80,7 +80,8 @@ const EditProduct = () => {
 
                 <button className='button add' disabled={(!name || !brand || !price) || (product?.name === name && product?.brand === brand && product?.price === price) || loading}>{loading ? <div className="loader"></div> : ''}Edit</button>
             </form>
-            <Link to='/' ><button className='button back'>Go back</button></Link>
+                <Link to='/' ><button className='button back'><i className="bi bi-arrow-counterclockwise"></i>Go back</button></Link>
+            </div> : <h3>Loading...</h3>}
         </div>
     );
 }

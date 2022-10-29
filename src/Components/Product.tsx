@@ -25,7 +25,7 @@ const Product: React.FC<ProductType> = ({ brand, name, price, id, onDelete }) =>
             <td>{brand}</td>
             <td>${price}</td>
             <td>
-                <Link to={`/edit/${id}`}><button className="button edit">Edit</button></Link>
+                <Link to={`/edit/${id}`}><button className="button edit"><i className="bi bi-pen-fill"></i>Edit</button></Link>
                 <Link to={`/edit/${id}`}><div className="edit-responsive"><i className="bi bi-pen-fill"></i></div></Link>
             </td>
             <td>

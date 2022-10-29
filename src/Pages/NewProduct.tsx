@@ -65,7 +65,7 @@ const NewProduct = () => {
 
                 <button className='button add' disabled={!name || !brand || !price || loading}>{loading ? <div className="loader"></div> : ''}Add Product</button>
             </form>
-            <Link to='/' ><button className='button back'>Go back</button></Link>
+            <Link to='/' ><button className='button back'><i className="bi bi-arrow-counterclockwise"></i>Go back</button></Link>
         </div>
     );
 }
