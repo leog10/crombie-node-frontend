@@ -63,7 +63,7 @@ const NewProduct = () => {
                 <Input value={brand} name='brand' type='text' label='Brand' setValue={setBrand} />
                 <Input value={price} name='price' type='number' label='Price' setValue={(e) => setPrice(+e)} />
 
-                <button className='button add' disabled={!name || !brand || !price || loading}>{loading ? <div className="loader"></div> : ''}Add</button>
+                <button className='button add' disabled={!name || !brand || !price || loading}>{loading ? <div className="loader"></div> : ''}Add Product</button>
             </form>
             <Link to='/' ><button className='button back'>Go back</button></Link>
         </div>
