@@ -58,6 +58,10 @@ th {
   border-right: 0.1rem solid #1a779160;
 }
 
+tr th:last-child {
+  border-right: none;
+}
+
 tbody {
   /* background-color: #dcdcdc; */
   background-color: #0A1929;
@@ -75,6 +79,10 @@ td {
 
 tr td:nth-child(3) {
   text-align: right;
+}
+
+tr td:last-child {
+  border-right: none;
 }
 
 tfoot {
