@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Button from "./Button";
 
 type ProductType = {
@@ -8,10 +7,11 @@ type ProductType = {
     price: number,
     id: number,
     loading?: boolean,
-    onDelete: () => void;
+    onDelete: () => void,
+    onEdit: (id: number) => void,
 }
 
-const Product: React.FC<ProductType> = ({ brand, name, price, id, onDelete }) => {
+const Product: React.FC<ProductType> = ({ brand, name, price, id, onDelete, onEdit }) => {
     const [loading, setLoading] = useState<boolean>(false)
 
     const handleOnClick = () => {
@@ -25,8 +25,8 @@ const Product: React.FC<ProductType> = ({ brand, name, price, id, onDelete }) =>
             <td>{brand}</td>
             <td>${price}</td>
             <td>
-                <Link to={`/edit/${id}`}><button className="button edit"><i className="bi bi-pen-fill"></i>Edit</button></Link>
-                <Link to={`/edit/${id}`}><div className="edit-responsive"><i className="bi bi-pen-fill"></i></div></Link>
+                <button onClick={() => onEdit(id)} className="button edit"><i className="bi bi-pen-fill"></i>Edit</button>
+                <div onClick={() => onEdit(id)} className="edit-responsive"><i className="bi bi-pen-fill"></i></div>
             </td>
             <td>
                 <Button loading={loading} text="Delete" className="button delete" handleOnClick={handleOnClick} />

@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import '../Components/Loader.css'
 import Input from "../Components/Input";
 
@@ -9,61 +8,38 @@ const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REM
 type ProductType = {
     name: string,
     brand: string,
-    price: number
+    price: number,
+    id?: number,
 }
 
-const EditProduct = () => {
-    const [name, setName] = useState<string>('');
-    const [brand, setBrand] = useState<string>('');
-    const [price, setPrice] = useState<number>(0);
-    const [product, setProduct] = useState<ProductType>();
+type EditProductType = {
+    fetchProducts: () => void,
+    product: ProductType | undefined,
+}
+
+const EditProduct: React.FC<EditProductType> = ({ fetchProducts, product }) => {
+    const [editProduct, setEditProduct] = useState<ProductType>({ name: product!.name, brand: product!.brand, price: product!.price });
     const [loading, setLoading] = useState<boolean>(false);
-
-    const { productId } = useParams();
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        fetch(`${API_URL}/${productId}`)
-            .then((res) => res.json())
-            .then((result) => {
-                setProduct(result);
-                setName(result.name);
-                setBrand(result.brand);
-                setPrice(result.price);
-            }).catch((error) => {
-                console.log(error.message);
-                navigate('/');
-            });
-    }, [navigate, productId])
 
     const handleEditProduct = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setLoading(true);
-
-        if (!name || !brand || !price) {
+        if (!product?.id) {
             return;
         }
 
-        const updateProduct: ProductType = {
-            name,
-            brand,
-            price
-        }
+        setLoading(true);
 
-        fetch(`${API_URL}/${productId}`, {
+        fetch(`${API_URL}/${product?.id}`, {
             method: 'PUT',
-            body: JSON.stringify(updateProduct),
+            body: JSON.stringify({ ...editProduct }),
             headers: {
                 'Content-Type': 'application/json',
             }
         }).then((res) => {
-            setLoading((value) => {
-                return !value;
-            });
+            setLoading((prev) => !prev);
             if (res.status === 200) {
-                navigate('/');
+                fetchProducts();
             }
         }
         ).catch((error) => console.log(error.message))
@@ -72,16 +48,14 @@ const EditProduct = () => {
     return (
         <div className="EditProduct">
             <h2 className="underline">Edit Product</h2>
-            {product ? <div><form onSubmit={(e) => { handleEditProduct(e) }}>
+            <form autoComplete="off" onSubmit={(e) => { handleEditProduct(e) }}>
 
-                <Input value={name} name='name' type='text' label='Name' setValue={setName} />
-                <Input value={brand} name='brand' type='text' label='Brand' setValue={setBrand} />
-                <Input value={price} name='price' type='number' label='Price' setValue={(e) => setPrice(+e)} />
+                <Input autoFocus value={editProduct.name} name='name' type='text' label='Name' setValue={(name) => setEditProduct({ ...editProduct, name })} />
+                <Input value={editProduct.brand} name='brand' type='text' label='Brand' setValue={(brand) => setEditProduct({ ...editProduct, brand })} />
+                <Input value={editProduct.price} name='price' type='number' label='Price' setValue={(price) => setEditProduct({ ...editProduct, price: +price })} />
 
-                <button className='button add' disabled={(!name || !brand || !price) || (product?.name === name && product?.brand === brand && product?.price === price) || loading}>{loading ? <div className="loader"></div> : ''}Edit</button>
+                <button className='button add' disabled={(!editProduct.name || !editProduct.brand || !editProduct.price) || (product?.name === editProduct.name && product?.brand === editProduct.brand && product?.price === editProduct.price) || loading}>{loading ? <div className="loader"></div> : ''}Edit</button>
             </form>
-                <Link to='/' ><button className='button back'><i className="bi bi-arrow-counterclockwise"></i>Go back</button></Link>
-            </div> : <h3>Loading...</h3>}
         </div>
     );
 }

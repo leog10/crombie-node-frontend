@@ -1,15 +1,22 @@
 .loader {
-    border: 0.25em solid #ffffff93;
+    border: 0.2em solid transparent;
     /* Light grey */
-    border-top: 0.25em solid #3498db;
-    border-right: 0.25em solid #3498db;
-    border-bottom: 0.25em solid #3498db;
+    border-top: 0.2em solid #0099ff;
+    border-right: 0.2em solid #0099ff;
+    border-bottom: 0.2em solid #0099ff;
     /* Blue */
     border-radius: 50%;
     width: 0.7em;
     height: 0.7em;
-    animation: spin 0.8s linear infinite;
+    animation: spin 1s linear infinite;
     margin: 0 10px 0 0;
+}
+
+.add:hover .loader {
+    border: 0.2em solid transparent;
+    border-top: 0.2em solid #005c99;
+    border-right: 0.2em solid #005c99;
+    border-bottom: 0.2em solid #005c99;
 }
 
 
