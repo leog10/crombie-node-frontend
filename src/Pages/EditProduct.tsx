@@ -1,6 +1,6 @@
 import { useState } from "react";
-import '../Components/Loader.css'
 import Input from "../Components/Input";
+import { toast } from "react-hot-toast";
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
 const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
@@ -15,9 +15,10 @@ type ProductType = {
 type EditProductType = {
     fetchProducts: () => void,
     product: ProductType | undefined,
+    toastStyle: Object,
 }
 
-const EditProduct: React.FC<EditProductType> = ({ fetchProducts, product }) => {
+const EditProduct: React.FC<EditProductType> = ({ fetchProducts, product, toastStyle }) => {
     const [editProduct, setEditProduct] = useState<ProductType>({ name: product!.name, brand: product!.brand, price: product!.price });
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -30,19 +31,27 @@ const EditProduct: React.FC<EditProductType> = ({ fetchProducts, product }) => {
 
         setLoading(true);
 
-        fetch(`${API_URL}/${product?.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({ ...editProduct }),
-            headers: {
-                'Content-Type': 'application/json',
+        toast.promise(
+            fetch(`${API_URL}/${product?.id}`, {
+                method: 'PUT',
+                body: JSON.stringify({ ...editProduct }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((res) => {
+                setLoading((prev) => !prev);
+                if (res.status === 200) {
+                    fetchProducts();
+                }
             }
-        }).then((res) => {
-            setLoading((prev) => !prev);
-            if (res.status === 200) {
-                fetchProducts();
-            }
-        }
-        ).catch((error) => console.log(error.message))
+            ),
+            {
+                loading: 'Updating...',
+                success: 'Product updated!',
+                error: (error) => error.message,
+            },
+            toastStyle
+        )
     }
 
     return (

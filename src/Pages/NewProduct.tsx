@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Input from '../Components/Input';
+import { toast } from "react-hot-toast";
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
 const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
@@ -11,10 +12,11 @@ type ProductType = {
 }
 
 type NewProductType = {
-    fetchProducts: () => void;
+    fetchProducts: () => void,
+    toastStyle: Object,
 }
 
-const NewProduct: React.FC<NewProductType> = ({ fetchProducts }) => {
+const NewProduct: React.FC<NewProductType> = ({ fetchProducts, toastStyle }) => {
     const [newProduct, setNewProduct] = useState<ProductType>({ name: '', brand: '', price: 0 });
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -23,20 +25,29 @@ const NewProduct: React.FC<NewProductType> = ({ fetchProducts }) => {
 
         setLoading(true);
 
-        fetch(`${API_URL}`, {
-            method: 'POST',
-            body: JSON.stringify({ ...newProduct, price: +newProduct.price }),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((res) => {
-            setLoading((prev) => !prev);
-            if (res.status === 201) {
-                setNewProduct({ name: '', brand: '', price: 0 });
-                fetchProducts();
-            }
-        }
-        ).catch((error) => console.log(error.message))
+        toast.promise(
+            fetch(`${API_URL}`, {
+                method: 'POST',
+                body: JSON.stringify({ ...newProduct, price: +newProduct.price }),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then((res) => {
+                setLoading((prev) => !prev);
+                if (res.status === 201) {
+                    setNewProduct({ name: '', brand: '', price: 0 });
+                    fetchProducts();
+                } else {
+                    throw new Error('Error creating product');
+                }
+            }),
+            {
+                loading: 'Creating...',
+                success: 'Product created!',
+                error: (error) => error.message,
+            },
+            toastStyle
+        )
     }
 
     return (

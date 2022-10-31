@@ -7,14 +7,14 @@ type ModalType = {
 
 const Modal: React.FC<ModalType> = ({ children, closeModal }) => {
 
-    const handleOnKeyUp = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') closeModal();
-    }
 
     useEffect(() => {
+        const handleOnKeyUp = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') closeModal();
+        }
         window.addEventListener('keyup', handleOnKeyUp);
         return () => window.removeEventListener('keyup', handleOnKeyUp);
-    }, [])
+    }, [closeModal])
 
     return (
         <div className="modal-container">

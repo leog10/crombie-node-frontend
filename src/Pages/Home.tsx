@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
 import Modal from "../Components/Modal";
 import Product from "../Components/Product";
 import EditProduct from "./EditProduct";
@@ -20,9 +21,22 @@ const Home = () => {
     const [showEditProduct, setShowEditProduct] = useState<boolean>(false);
     const [editProduct, setEditProduct] = useState<ProductType | undefined>();
 
+    const toastStyle = {
+        style: {
+            color: '#fff',
+            background: '#2A3745',
+            display: 'flex',
+            alignItems: 'baseline',
+            border: '1px solid rgba(144, 202, 249, 0.5)'
+        }
+    }
+
     const fetchProducts = () => {
         fetch(`${API_URL}`)
-            .then((res) => res.json())
+            .then((res) => {
+                if (res.status === 200) return res.json();
+                throw new Error('Error fetching products')
+            })
             .then((result) => setProducts(result)
             ).catch((error) => console.log(error.message)
             );
@@ -43,19 +57,25 @@ const Home = () => {
     }, [])
 
     const handleOnDelete = (id: number) => {
-        fetch(`${API_URL}/${id}`, {
-            method: 'DELETE'
-        })
-            .then((res) => {
-                if (res.status === 200) {
-                    fetch(`${API_URL}`)
-                        .then((res) => res.json())
-                        .then((result) => setProducts(result)
-                        ).catch((error) => console.log(error.message)
-                        );
-                }
+        toast.promise(
+            fetch(`${API_URL}/${id}`, {
+                method: 'DELETE'
             })
-            .catch((error) => console.log(error));
+                .then((res) => {
+                    if (res.status === 200) {
+                        fetchProducts();
+                    } else {
+                        throw new Error('Error deleting product')
+                    }
+                }),
+            {
+                loading: 'Deleting...',
+                success: 'Product deleted!',
+                error: (err) => err.message,
+
+            },
+            toastStyle
+        )
     }
 
     const handleOnEdit = (id: number) => {
@@ -67,6 +87,7 @@ const Home = () => {
     }
 
     return (<div className={showAddNewProduct || showEditProduct ? "modal-open" : 'Home'}>
+        <Toaster />
         <div className="table-container">
             {products ?
                 <table cellSpacing='0' cellPadding="0">
@@ -91,8 +112,8 @@ const Home = () => {
 
             <button onClick={() => setShowAddNewProduct(!showAddNewProduct)} className="button add">Add Product</button>
         </div>
-        {showAddNewProduct && <Modal closeModal={() => setShowAddNewProduct(false)}><NewProduct fetchProducts={closeAddModal} /></Modal>}
-        {showEditProduct && <Modal closeModal={() => setShowEditProduct(false)}><EditProduct product={editProduct} fetchProducts={closeEditModal} /></Modal>}
+        {showAddNewProduct && <Modal closeModal={() => setShowAddNewProduct(false)}><NewProduct toastStyle={toastStyle} fetchProducts={closeAddModal} /></Modal>}
+        {showEditProduct && <Modal closeModal={() => setShowEditProduct(false)}><EditProduct toastStyle={toastStyle} product={editProduct} fetchProducts={closeEditModal} /></Modal>}
     </div>);
 }
 
