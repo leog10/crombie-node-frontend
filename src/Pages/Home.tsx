@@ -108,7 +108,8 @@ const Home = () => {
                     <tfoot>
                     </tfoot>
                 </table>
-                : <h2 className="home-loading">Loading...</h2>}
+                :
+                <h2 className="home-loading"><div className="loader"></div>Loading...</h2>}
 
             <button onClick={() => setShowAddNewProduct(!showAddNewProduct)} className="button add">Add Product</button>
         </div>

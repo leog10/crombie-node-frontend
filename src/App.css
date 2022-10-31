@@ -44,7 +44,10 @@ a {
 }
 
 .home-loading {
-  margin-top: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: -5rem;
 }
 
 .NewProduct,
@@ -92,6 +95,10 @@ tr th:last-child {
 
 tbody {
   background-color: #0A1929;
+}
+
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 td {
