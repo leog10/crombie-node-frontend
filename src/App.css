@@ -45,9 +45,8 @@ a {
 
 .home-loading {
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-top: -5rem;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .NewProduct,
@@ -60,8 +59,54 @@ a {
   margin-top: 0;
 }
 
+.search-container form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.search-container button {
+  margin: 0.3rem 0 0 0.8rem !important;
+  padding: 0.4rem;
+  width: 20%;
+}
+
+.search-container button i {
+  margin: 0 0.4rem 0 0.2rem;
+}
+
+.search-container input,
+.search-container .input-container,
+.search-container .input-label-container,
+.search-container form {
+  width: 100%;
+  max-width: 100%;
+}
+
+.select-container {
+  position: relative;
+}
+
+.select-container select {
+  position: absolute;
+  background: transparent;
+  color: #B2B7BC;
+  padding: 0.8rem 0.3rem;
+  bottom: -1.6rem;
+  right: 0rem;
+  outline: 0;
+  border: 0;
+}
+
+.select-container option {
+  color: #B2B7BC;
+  background-color: #0A1929;
+  padding: 0.5rem;
+}
+
 .table-container {
-  margin: auto;
+  margin: 6rem auto 0;
   padding: 2rem 0.2rem;
 }
 
@@ -74,6 +119,7 @@ table {
 }
 
 th {
+  width: 6rem;
   position: relative;
   padding: 0.5rem;
   color: #dcdcdc;
@@ -223,6 +269,10 @@ form {
   width: fit-content;
 }
 
+input {
+  border: 0;
+}
+
 .input-label-container {
   max-width: max-content;
   margin: 0 auto;
@@ -242,9 +292,8 @@ form input {
   background: #202E3C;
   /* caret-color: #4323b6; */
   caret-color: #90CAF9;
-  border: 3px solid transparent;
   /* border-bottom-color: rgba(0, 0, 0, 0.42); */
-  border-bottom-color: #B2B7BC;
+  border-bottom: 3px solid #B2B7BC;
   transition: border 500ms;
   /* color: rgba(0, 0, 0, 0.87); */
   color: #B2B7BC;
@@ -253,16 +302,13 @@ form input {
 }
 
 form input:hover {
-  /* background-color: #ececec; */
   background-color: #2A3745;
 }
 
 form input:focus {
   outline: 0;
   transition: all 250ms;
-  /* border-bottom: 3px solid #4323b6; */
   border-bottom: 3px solid #90CAF9;
-  /* background-color: #dcdcdc; */
   background-color: #202E3C;
 }
 

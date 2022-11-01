@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import Input from "../Components/Input";
 import Modal from "../Components/Modal";
 import Product from "../Components/Product";
 import EditProduct from "./EditProduct";
@@ -20,6 +21,9 @@ const Home = () => {
     const [showAddNewProduct, setShowAddNewProduct] = useState<boolean>(false);
     const [showEditProduct, setShowEditProduct] = useState<boolean>(false);
     const [editProduct, setEditProduct] = useState<ProductType | undefined>();
+    const [search, setSearch] = useState<string>('');
+    const [searchBy, setSearchBy] = useState<string>('name');
+    const [loading, setLoading] = useState<boolean>(false);
 
     const toastStyle = {
         style: {
@@ -31,30 +35,45 @@ const Home = () => {
         }
     }
 
-    const fetchProducts = () => {
-        fetch(`${API_URL}`)
+    const fetchProducts = (url: string) => {
+        setLoading((prev) => !prev);
+        setProducts([])
+        fetch(url)
             .then((res) => {
                 if (res.status === 200) return res.json();
                 throw new Error('Error fetching products')
             })
-            .then((result) => setProducts(result)
-            ).catch((error) => console.log(error.message)
+            .then((result) => {
+                setProducts(result);
+                setLoading((prev) => !prev);
+            }
+            ).catch((error) => {
+                console.log(error.message)
+                setLoading((prev) => !prev);
+            }
             );
     }
 
+    const fetchWithSearchQuery = () => {
+        fetchProducts(`${API_URL}?${searchBy}=${search}`);
+    }
+
+    useEffect(() => {
+        fetchProducts(API_URL);
+    }, [])
+
     const closeAddModal = () => {
-        fetchProducts();
+        // fetchProducts(API_URL); // disabled for better ux
+        fetchWithSearchQuery();
         setShowAddNewProduct((prev) => !prev);
     }
 
     const closeEditModal = () => {
-        fetchProducts();
+        // fetchProducts(API_URL); // disabled for better ux
+        // setProducts([])
+        fetchWithSearchQuery();
         setShowEditProduct((prev) => !prev);
     }
-
-    useEffect(() => {
-        fetchProducts();
-    }, [])
 
     const handleOnDelete = (id: number) => {
         toast.promise(
@@ -63,7 +82,10 @@ const Home = () => {
             })
                 .then((res) => {
                     if (res.status === 200) {
-                        fetchProducts();
+                        setProducts((prev) => {
+                            const products = prev!.filter((p) => p.id !== id);
+                            return products;
+                        })
                     } else {
                         throw new Error('Error deleting product')
                     }
@@ -86,30 +108,92 @@ const Home = () => {
         }
     }
 
+    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        fetchProducts(`${API_URL}?${searchBy}=${search}`);
+    }
+
     return (<div className={showAddNewProduct || showEditProduct ? "modal-open" : 'Home'}>
         <Toaster />
         <div className="table-container">
-            {products ?
-                <table cellSpacing='0' cellPadding="0">
-                    <thead>
-                        <tr>
-                            <th>Name<div className="th-separator"></div></th>
-                            <th>Brand<div className="th-separator"></div></th>
-                            <th>Price<div className="th-separator"></div></th>
-                            <th>Edit<div className="th-separator"></div></th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products && products.map((p) =>
-                            <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} onEdit={(id) => handleOnEdit(id)} onDelete={() => handleOnDelete(p.id)} />
-                        )}
-                    </tbody>
-                    <tfoot>
-                    </tfoot>
-                </table>
+            {products?.length ?
+                <>
+                    <div className="search-container">
+                        <form autoComplete="off" onSubmit={(e) => handleSearch(e)}>
+                            <Input errorSpan={false} required={false} name="search" label="Search product" value={search} type='text' setValue={(e) => setSearch(e)} />
+                            <div className="select-container">
+                                <select onChange={(e) => setSearchBy(e.target.value)} defaultValue={'name'} title="Search by" >
+                                    <option value="name">Search by name</option>
+                                    <option value="brand">Search by brand</option>
+                                </select>
+                            </div>
+                            <button className="button delete">{!loading ? <i className="bi bi-search"></i> : <div className="loader"></div>}Search</button>
+                        </form>
+                    </div>
+
+
+                    <table cellSpacing='0' cellPadding="0">
+                        <thead>
+                            <tr>
+                                <th>Name<div className="th-separator"></div></th>
+                                <th>Brand<div className="th-separator"></div></th>
+                                <th>Price<div className="th-separator"></div></th>
+                                <th>Edit<div className="th-separator"></div></th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products && products.map((p) =>
+                                <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} onEdit={(id) => handleOnEdit(id)} onDelete={() => handleOnDelete(p.id)} />
+                            )}
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </>
                 :
-                <h2 className="home-loading"><div className="loader"></div>Loading...</h2>}
+                <>
+                    <div className="search-container">
+                        <form autoComplete="off" onSubmit={(e) => handleSearch(e)}>
+                            <Input errorSpan={false} required={false} name="search" label="Search product" value={search} type='text' setValue={(e) => setSearch(e)} />
+                            <div className="select-container">
+                                <select onChange={(e) => setSearchBy(e.target.value)} defaultValue={'name'} title="Search by" >
+                                    <option value="name">Search by name</option>
+                                    <option value="brand">Search by brand</option>
+                                </select>
+                            </div>
+                            <button className="button delete">{!loading ? <i className="bi bi-search"></i> : <div className="loader"></div>}Search</button>
+                        </form>
+                    </div>
+
+                    <table cellSpacing='0' cellPadding="0">
+                        <thead>
+                            <tr>
+                                <th>Name<div className="th-separator"></div></th>
+                                <th>Brand<div className="th-separator"></div></th>
+                                <th>Price<div className="th-separator"></div></th>
+                                <th>Edit<div className="th-separator"></div></th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            {products && !loading ?
+                                <tr>
+                                    <td colSpan={5}>
+                                        <h3>No products found</h3>
+                                    </td>
+                                </tr>
+                                :
+                                <tr>
+                                    <td colSpan={5}>
+                                        <h2 className="home-loading"><div className="loader"></div>Loading...</h2>
+                                    </td>
+                                </tr>}
+                        </tfoot>
+                    </table>
+                </>
+
+            }
 
             <button onClick={() => setShowAddNewProduct(!showAddNewProduct)} className="button add">Add Product</button>
         </div>
