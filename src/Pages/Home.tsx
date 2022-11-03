@@ -36,6 +36,7 @@ const Home = () => {
     }
 
     const fetchProducts = (url: string) => {
+        setLoading(true);
         setProducts([])
         fetch(url)
             .then((res) => {
