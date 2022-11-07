@@ -21,9 +21,11 @@ const Home = () => {
     const [showAddNewProduct, setShowAddNewProduct] = useState<boolean>(false);
     const [showEditProduct, setShowEditProduct] = useState<boolean>(false);
     const [editProduct, setEditProduct] = useState<ProductType | undefined>();
-    const [search, setSearch] = useState<string>('');
+    const [searchQuery, setSearch] = useState<string>('');
     const [searchBy, setSearchBy] = useState<string>('name');
+    const [searchLimit, setSearchLimit] = useState<string>('5');
     const [loading, setLoading] = useState<boolean>(true);
+    const [pagination, setPagination] = useState({ info: '1', page: 1, totalPages: 1 })
 
     const toastStyle = {
         style: {
@@ -39,36 +41,50 @@ const Home = () => {
         setLoading(true);
         setProducts([])
         fetch(url)
-            .then((res) => {
-                if (res.status === 200) return res.json();
-                throw new Error('Error fetching products')
-            })
+            .then((res) => res.json())
             .then((result) => {
-                setProducts(result);
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                setProducts(result.products);
+                const [page, totalPages] = result.page.split('/')
+                if (result.page && result.showing) {
+                    setPagination({ page: +page, totalPages: +totalPages, info: result.showing });
+                } else {
+                    setPagination({ page: 1, totalPages: 1, info: '0 of 0' });
+                }
                 setLoading(false);
             }
             ).catch((error) => {
                 console.log(error.message)
+                setPagination({ page: 1, totalPages: 1, info: '0 of 0' });
                 setLoading(false);
             }
             );
     }
 
-    const fetchWithSearchQuery = () => {
-        fetchProducts(`${API_URL}?${searchBy}=${search}`);
+    const handleSearch = (e?: React.FormEvent<HTMLFormElement>, limit?: string, page?: number) => {
+        e?.preventDefault();
+        if (page) {
+            return fetchProducts(`${API_URL}?${searchBy}=${searchQuery}&limit=${searchLimit}&page=${page}`);
+        }
+        if (limit) {
+            return fetchProducts(`${API_URL}?${searchBy}=${searchQuery}&limit=${limit}`);
+        }
+        fetchProducts(`${API_URL}?${searchBy}=${searchQuery}&limit=${searchLimit}`);
     }
 
     useEffect(() => {
-        fetchProducts(API_URL);
+        fetchProducts(API_URL)
     }, [])
 
     const closeAddModal = () => {
-        fetchWithSearchQuery();
+        handleSearch(undefined, undefined, pagination.page);
         setShowAddNewProduct((prev) => !prev);
     }
 
     const closeEditModal = () => {
-        fetchWithSearchQuery();
+        handleSearch(undefined, undefined, pagination.page);
         setShowEditProduct((prev) => !prev);
     }
 
@@ -79,10 +95,12 @@ const Home = () => {
             })
                 .then((res) => {
                     if (res.status === 200) {
-                        setProducts((prev) => {
-                            const products = prev!.filter((p) => p.id !== id);
-                            return products;
-                        })
+                        handleSearch();
+                        // I had to refetch to update the table quantity info
+                        // setProducts((prev) => {
+                        //     const products = prev!.filter((p) => p.id !== id);
+                        //     return products;
+                        // })
                     } else {
                         throw new Error('Error deleting product')
                     }
@@ -105,9 +123,22 @@ const Home = () => {
         }
     }
 
-    const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        fetchProducts(`${API_URL}?${searchBy}=${search}`);
+    const handlePageUp = () => {
+        if (pagination.page < pagination.totalPages) {
+            handleSearch(undefined, undefined, pagination.page + 1)
+            setPagination((prev) => {
+                return { ...prev, page: pagination.page + 1 }
+            });
+        }
+    }
+
+    const handlePageDown = () => {
+        if (pagination.page > 1) {
+            setPagination((prev) => {
+                handleSearch(undefined, undefined, pagination.page - 1)
+                return { ...prev, page: pagination.page - 1 }
+            });
+        }
     }
 
     return (<div className={showAddNewProduct || showEditProduct ? "modal-open" : 'Home'}>
@@ -116,9 +147,9 @@ const Home = () => {
             <>
                 <div className="search-container">
                     <form autoComplete="off" onSubmit={(e) => handleSearch(e)}>
-                        <Input errorSpan={false} required={false} name="search" label="Search product" value={search} type='text' setValue={(e) => setSearch(e)} />
+                        <Input errorSpan={false} required={false} name="search" label="Search product" value={searchQuery} type='text' setValue={(e) => setSearch(e)} />
                         <div className="select-container">
-                            <select onChange={(e) => setSearchBy(e.target.value)} defaultValue={'name'} title="Search by" >
+                            <select onChange={(e) => setSearchBy(e.target.value)} defaultValue={'name'} >
                                 <option value="name">Search by name</option>
                                 <option value="brand">Search by brand</option>
                             </select>
@@ -140,33 +171,71 @@ const Home = () => {
                     </thead>
 
                     {loading ?
-                        <tfoot>
-                            <tr>
+                        <tbody>
+                            <tr className="no-hover">
                                 <td colSpan={5}>
                                     <h2 className="home-loading"><div className="loader"></div>Loading...</h2>
                                 </td>
                             </tr>
-                        </tfoot>
+                        </tbody>
                         :
-                        products?.length === 0 && !loading ?
-                            <tfoot>
-                                <tr>
+                        (products?.length === 0 || !products) && !loading ?
+                            <tbody>
+                                <tr className={!products?.length ? 'no-hover' : ''}>
                                     <td colSpan={5}>
                                         <h3>No products found</h3>
                                     </td>
                                 </tr>
-                            </tfoot>
+                            </tbody>
                             :
                             <>
                                 <tbody>
                                     {products && products.map((p) =>
                                         <Product key={p.id} id={p.id} brand={p.brand} name={p.name} price={p.price} onEdit={(id) => handleOnEdit(id)} onDelete={() => handleOnDelete(p.id)} />
                                     )}
+                                    {products && products?.length < +searchLimit ?
+                                        <>
+                                            {Array((+searchLimit - products.length) - 1).fill(0).map((_, i) => {
+                                                return (
+                                                    <tr key={i} className='empty-tr'>
+                                                    </tr>
+                                                )
+                                            })}
+                                            <tr className="no-hover empty-tr">
+                                                <td colSpan={5}></td>
+                                            </tr>
+                                        </>
+                                        :
+                                        ''}
                                 </tbody>
-                                <tfoot>
-                                </tfoot>
                             </>
                     }
+                    <tfoot>
+                        <tr>
+                            <td colSpan={5}>
+                                <div className="page-buttons-container">
+                                    <div>
+                                        <span>Rows per page:</span>
+                                        <select disabled={!products?.length} onChange={(e) => {
+                                            setSearchLimit(e.target.value);
+                                            setPagination((prev) => ({ ...prev, page: 1 }));
+                                            handleSearch(undefined, e.target.value);
+                                        }
+                                        } defaultValue={searchLimit}>
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                        </select>
+                                    </div>
+                                    <span className="pagination-info">{pagination.info}</span>
+                                    <span>
+                                        <button onClick={handlePageDown} disabled={pagination.page === 1}><i className="bi bi-caret-left"></i></button>
+                                        <button onClick={handlePageUp} disabled={pagination.page === pagination.totalPages}><i className="bi bi-caret-right"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </>
 

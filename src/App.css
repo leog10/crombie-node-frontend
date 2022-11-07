@@ -59,6 +59,11 @@ a {
   margin-top: 0;
 }
 
+.search-container {
+  margin: 0 auto;
+  width: 45%;
+}
+
 .search-container form {
   display: flex;
   flex-direction: row;
@@ -99,7 +104,7 @@ a {
   border: 0;
 }
 
-.select-container option {
+option {
   color: #B2B7BC;
   background-color: #0A1929;
   padding: 0.5rem;
@@ -111,15 +116,16 @@ a {
 }
 
 table {
-  width: 100%;
-  margin: 0 0 2rem;
+  width: 45%;
+  min-height: 22rem;
+  margin: 0 auto 2rem;
   border-radius: 10px;
   background-color: transparent;
   border: 0.05rem solid rgb(81, 81, 81);
+  table-layout: fixed;
 }
 
 th {
-  width: 6rem;
   position: relative;
   padding: 0.5rem;
   color: #dcdcdc;
@@ -147,6 +153,10 @@ tbody tr:hover {
   background-color: rgba(255, 255, 255, 0.08);
 }
 
+.no-hover {
+  background-color: transparent !important;
+}
+
 td {
   padding: 0.5rem 1.5rem;
   color: #dcdcdc;
@@ -164,6 +174,10 @@ tr td:last-child {
 
 tfoot {
   height: 1.5rem;
+}
+
+tfoot td {
+  border-bottom: none;
 }
 
 .button {
@@ -191,6 +205,81 @@ tfoot {
 
 table i {
   margin-right: 0.5rem;
+}
+
+.empty-tr {
+  padding: 0.5rem 1.5rem;
+  height: 3.17rem;
+}
+
+.page-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  user-select: none;
+}
+
+.page-buttons-container select {
+  margin-left: 1rem;
+  font-size: inherit;
+  text-align: center;
+  background: transparent;
+  border-radius: 4px;
+  color: inherit;
+  margin-top: 0.3rem;
+  height: 2rem;
+  width: 2.2rem;
+  padding: 0 0rem 0 0rem;
+  cursor: pointer;
+  border: none;
+}
+
+.page-buttons-container select:focus-visible {
+  background-color: #2A3745;
+  outline: #2A3745;
+}
+
+.pagination-info {
+  width: 5rem;
+}
+
+.page-buttons-container button {
+  background-color: transparent;
+  color: inherit;
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.bi-caret-left,
+.bi-caret-right {
+  margin: 0;
+  display: inherit;
+}
+
+.page-buttons-container button:hover,
+.page-buttons-container button:focus-visible {
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.page-buttons-container button:active {
+  background-color: rgba(255, 255, 255, 0.25);
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
+.page-buttons-container button:disabled {
+  cursor: default;
+  background-color: transparent !important;
 }
 
 .bi-arrow-counterclockwise {
@@ -464,6 +553,19 @@ input[type=number] {
   color: #90CAF9;
 }
 
+@media only screen and (max-width: 1700px) {
+  table {
+    table-layout: auto;
+    width: 95%;
+    margin: 0 auto 2rem;
+  }
+
+  .search-container {
+    margin: 0 auto;
+    width: auto;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .edit {
     display: none;
@@ -498,8 +600,14 @@ input[type=number] {
   }
 
   table {
+    table-layout: auto;
     width: 95%;
     margin: 0 auto 2rem;
+  }
+
+  .search-container {
+    margin: 0 auto;
+    width: auto;
   }
 
   tbody {
