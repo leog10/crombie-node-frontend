@@ -147,7 +147,7 @@ const Home = () => {
             <>
                 <div className="search-container">
                     <form autoComplete="off" onSubmit={(e) => handleSearch(e)}>
-                        <Input errorSpan={false} required={false} name="search" label="Search product" value={searchQuery} type='text' setValue={(e) => setSearch(e)} />
+                        <Input errorSpan={false} required={false} name="search" label="Search product" value={searchQuery} type='search' setValue={(e) => setSearch(e)} />
                         <div className="select-container">
                             <select onChange={(e) => setSearchBy(e.target.value)} defaultValue={'name'} >
                                 <option value="name">Search by name</option>

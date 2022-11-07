@@ -643,4 +643,9 @@ input[type=number] {
     height: 60vh;
     overflow-y: scroll !important;
   }
+
+  .page-buttons-container select {
+    margin-left: 0;
+    width: 2.5rem;
+  }
 }
