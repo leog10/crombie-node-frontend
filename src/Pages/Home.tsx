@@ -7,7 +7,8 @@ import EditProduct from "./EditProduct";
 import NewProduct from "./NewProduct";
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
-const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
+// const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
+const API_URL = 'https://crombie-node-ts-production.up.railway.app/product'; // REMOTE v2 SEQUELIZE
 
 type ProductType = {
     name: string,
@@ -25,7 +26,7 @@ const Home = () => {
     const [searchBy, setSearchBy] = useState<string>('name');
     const [searchLimit, setSearchLimit] = useState<string>('5');
     const [loading, setLoading] = useState<boolean>(true);
-    const [pagination, setPagination] = useState({ info: '1', page: 1, totalPages: 1 })
+    const [pagination, setPagination] = useState({ info: '0 of 0', page: 1, totalPages: 1 })
 
     const toastStyle = {
         style: {
@@ -46,10 +47,9 @@ const Home = () => {
                 if (result.error) {
                     throw new Error(result.error);
                 }
-                setProducts(result.products);
-                const [page, totalPages] = result.page.split('/')
-                if (result.page && result.showing) {
-                    setPagination({ page: +page, totalPages: +totalPages, info: result.showing });
+                setProducts(result.products.rows);
+                if (result.page && result.totalPages) {
+                    setPagination({ page: result.page, totalPages: result.totalPages, info: result.info });
                 } else {
                     setPagination({ page: 1, totalPages: 1, info: '0 of 0' });
                 }

@@ -3,7 +3,8 @@ import Input from '../Components/Input';
 import { toast } from "react-hot-toast";
 
 // const API_URL = 'http://localhost:5000/product'; // LOCAL
-const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
+// const API_URL = 'https://crombie-node-production.up.railway.app/product'; // REMOTE
+const API_URL = 'https://crombie-node-ts-production.up.railway.app/product'; // REMOTE v2 SEQUELIZE
 
 type ProductType = {
     name: string,
